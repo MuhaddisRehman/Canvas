@@ -7,6 +7,7 @@ const ctx = canvas.getContext('2d')
 canvas.width =  window.innerWidth;
 canvas.height = window.innerHeight;
 const particleArray = [];
+let hue = 0;
 window.addEventListener('resize', ()=>{
     canvas.width =  window.innerWidth;
     canvas.height = window.innerHeight;
@@ -31,7 +32,7 @@ canvas.addEventListener('mousemove', (e)=>{
         particleArray.push(new Particle())
     }
 })
-ctx.strokeStyle = 'white';
+
 ctx.lineWidth = 4
 ctx.fillStyle = 'white';
 
@@ -45,13 +46,16 @@ class Particle {
         this.size = Math.random() * 10 + 1;
         this.speedX = Math.random() * 3 - 1.5;
         this.speedY = Math.random() * 3 - 1.5;
+        this.color = `hsl(${hue}, 100%, 50%)`
     }
     update(){
         this.x += this.speedX;
         this.y += this.speedY;
-        if(this.size > 0.2)this.size-= 0.2
+        if(this.size > 0.3)this.size-= 0.1
     }
     draw(){
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI *2);
         ctx.fill()
@@ -82,8 +86,12 @@ const handleParticles = () =>{
 }
 
 const animate = () =>{
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    // ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.01)'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
     handleParticles()
+    hue++;
     requestAnimationFrame(animate)
 }
 animate()
