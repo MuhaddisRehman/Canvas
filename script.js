@@ -28,7 +28,7 @@ canvas.addEventListener('click', (e)=>{
 canvas.addEventListener('mousemove', (e)=>{
     mouse.x = e.x;
     mouse.y = e.y;
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 2; i++) {
         particleArray.push(new Particle())
     }
 })
@@ -76,7 +76,21 @@ class Particle {
 const handleParticles = () =>{
     for (let i = 0; i < particleArray.length; i++) {
         const particle = particleArray[i];
-        if (particle.size < 0.3) {
+        for (let j = i; j < particleArray.length; j++) {
+           
+            const dx = particleArray[j].x - particleArray[i].x;
+            const dy = particleArray[j].y - particleArray[i].y;
+            const distance = Math.sqrt(dx*dx + dy*dy)
+
+            if(distance<100){
+                ctx.lineWidth = particleArray[j].size/10
+                ctx.beginPath()
+                ctx.moveTo(particleArray[j].x, particleArray[j].y)
+                ctx.lineTo(particleArray[i].x, particleArray[i].y)
+                ctx.stroke();
+            }
+        }
+        if (particle.size < 0.9) {
             particleArray.splice(i, 1)
             i--;
         }
@@ -86,9 +100,9 @@ const handleParticles = () =>{
 }
 
 const animate = () =>{
-    // ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.01)'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    // ctx.fillStyle = 'rgba(0, 0, 0, 0.01)'
+    // ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     handleParticles()
     hue++;
