@@ -25,6 +25,14 @@ const mouse = {
 canvas.addEventListener('mousedown', () => {
     mouse.down = true;
 });
+canvas.addEventListener('click', (e) => {
+    mouse.x = e.x
+    mouse.y = e.y;
+    for (let i = 0; i < 5; i++) {
+        particleArray.push(new Particle());
+    }
+    playSound();
+});
 
 canvas.addEventListener('mouseup', () => {
     mouse.down = false;
@@ -134,6 +142,7 @@ animate();
 
 // Function to play the sound
 function playSound() {
+    audioContext.resume()
     const gainNode = audioContext.createGain();
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
